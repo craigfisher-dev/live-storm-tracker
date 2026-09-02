@@ -16,16 +16,34 @@ The application does not predict storm formation or forecast paths beyond what t
 
 ## Technology Stack
 
-| Component | Technology |
-|---|---|
-| 3D rendering | React, React Three Fiber, three globe |
-| Base imagery | NASA GIBS, called directly from the browser, no key required |
-| Wind and temperature data | Open Meteo, called directly from the browser, no key required |
-| Precipitation radar | RainViewer, called directly from the browser, no key required |
-| Hurricane data | National Hurricane Center public storm feed, called directly from the browser, no key required |
-| Hosting | Static frontend, Cloudflare Pages, free tier |
+### Frontend Framework
 
-No backend is required for version one. Every data source is free, requires no key, and can be called directly from the frontend. Exact endpoint URLs and tile patterns should be verified against each provider's current documentation at implementation time rather than assumed from this plan.
+- Vite, React and TypeScript template
+- React
+- TypeScript
+- Tailwind CSS, for styling the interface elements such as layer toggle controls and the temperature popup. This is separate from the three dimensional rendering, which remains entirely in Three.js and React Three Fiber.
+
+### Three.js Rendering
+
+- three, the Three.js core library
+- react three fiber
+- drei
+- three globe
+
+### Data Sources
+
+All data sources are called directly from the browser and require no key. See the Data Sources section below for full detail on each.
+
+### Deployment
+
+- wrangler, Cloudflare command line tool, development dependency
+- @tailwindcss/vite plugin, integrated into the Vite config for build time styling
+- @cloudflare/vite-plugin, integrated into the Vite config for Cloudflare deployment
+- Deployment target: Cloudflare Workers with static assets, configured through the Vite plugin rather than a manually uploaded Pages project
+- Deployment command: npm run deploy
+- Local production preview command: npm run preview
+
+Every data source is free, requires no key, and can be called directly from the frontend. Exact endpoint URLs and tile patterns should be verified against each provider's current documentation at implementation time rather than assumed from this plan.
 
 ## Layers and Toggles
 
@@ -62,14 +80,40 @@ Provides the past two hours of radar frames plus a short term forecast, delivere
 
 Public feed covering the Atlantic and Eastern and Central Pacific basins. No key required. Each active storm includes name, classification, wind speed, pressure, position, movement, and links to the official forecast.
 
+## Project Setup
+
+- [x] Vite, React, and TypeScript scaffold created
+- [ ] Tailwind CSS installed
+- [ ] Tailwind CSS configured in the Vite config
+- [ ] Default Vite starter index.css styling removed
+- [ ] Default Vite and React starter markup and logic removed from App.tsx
+- [ ] App.css removed
+- [ ] Default assets folder icons removed
+- [ ] Leftover starter content removed from main.tsx
+- [x] Wrangler installed
+- [x] Cloudflare Vite plugin installed
+- [x] Cloudflare Vite plugin configured in vite.config.ts
+- [x] wrangler.jsonc generated via wrangler setup
+- [x] Deploy and preview scripts added to package.json
+- [x] three installed
+- [x] react three fiber installed
+- [x] drei installed
+- [x] three globe installed
+- [ ] npm run dev running with no errors or warnings
+
+## Deployment Setup
+
+- [x] Cloudflare Worker project configured for static assets via the Vite plugin
+- [ ] First deployment pushed to Cloudflare with npm run deploy, done once the initial commit is ready to go live
+
 ## Build Order
 
-1. Static rotating globe with GIBS base imagery
-2. Wind particle layer, built first as a flat proof of concept, then adapted to wrap correctly around the sphere
-3. Temperature layer with click for current conditions and forecast
-4. Radar tile overlay, using the same tile engine pattern as the base imagery
-5. Hurricane markers from the National Hurricane Center feed, positioned so the storm's structure is visible through the wind and radar layers beneath it
-6. Layer toggle controls allowing any combination of the four layers to be shown or hidden
+1. [ ] Static rotating globe with GIBS base imagery
+2. [ ] Wind particle layer, built first as a flat proof of concept, then adapted to wrap correctly around the sphere
+3. [ ] Temperature layer with click for current conditions and forecast
+4. [ ] Radar tile overlay, using the same tile engine pattern as the base imagery
+5. [ ] Hurricane markers from the National Hurricane Center feed, positioned so the storm's structure is visible through the wind and radar layers beneath it
+6. [ ] Layer toggle controls allowing any combination of the four layers to be shown or hidden
 
 ## Stretch Goals
 
