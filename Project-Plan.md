@@ -83,13 +83,13 @@ Public feed covering the Atlantic and Eastern and Central Pacific basins. No key
 ## Project Setup
 
 - [x] Vite, React, and TypeScript scaffold created
-- [ ] Tailwind CSS installed
-- [ ] Tailwind CSS configured in the Vite config
-- [ ] Default Vite starter index.css styling removed
-- [ ] Default Vite and React starter markup and logic removed from App.tsx
-- [ ] App.css removed
-- [ ] Default assets folder icons removed
-- [ ] Leftover starter content removed from main.tsx
+- [x] Tailwind CSS installed
+- [x] Tailwind CSS configured in the Vite config
+- [x] Default Vite starter index.css styling removed
+- [x] Default Vite and React starter markup and logic removed from App.tsx
+- [x] App.css removed
+- [x] Default assets folder icons removed
+- [x] Leftover starter content removed from main.tsx
 - [x] Wrangler installed
 - [x] Cloudflare Vite plugin installed
 - [x] Cloudflare Vite plugin configured in vite.config.ts
@@ -99,16 +99,19 @@ Public feed covering the Atlantic and Eastern and Central Pacific basins. No key
 - [x] react three fiber installed
 - [x] drei installed
 - [x] three globe installed
-- [ ] npm run dev running with no errors or warnings
+- [x] npm run dev running with no errors or warnings
 
 ## Deployment Setup
 
 - [x] Cloudflare Worker project configured for static assets via the Vite plugin
-- [ ] First deployment pushed to Cloudflare with npm run deploy, done once the initial commit is ready to go live
+- [x] First deployment pushed to Cloudflare with npm run deploy, done once the initial commit is ready to go live
 
 ## Build Order
 
 1. [ ] Static rotating globe with GIBS base imagery
+   - [x] Basic sphere rendering with mesh, sphereGeometry, and meshPhongMaterial, built by hand to learn the underlying Three.js concepts before reintroducing the three globe library
+   - [ ] Replace the hand built sphere with the three globe library
+   - [ ] Wire up GIBS imagery through the tile engine method
 2. [ ] Wind particle layer, built first as a flat proof of concept, then adapted to wrap correctly around the sphere
 3. [ ] Temperature layer with click for current conditions and forecast
 4. [ ] Radar tile overlay, using the same tile engine pattern as the base imagery
@@ -120,6 +123,7 @@ Public feed covering the Atlantic and Eastern and Central Pacific basins. No key
 - Wind altitude toggle across multiple pressure levels
 - Global storm coverage through IBTrACS, labeled as a distinct, less current data source
 - Historical storm track lines
+- Tornado tracking, using active tornado warnings from the National Weather Service API, shown as warned areas rather than a precise tracked path, since tornadoes move too quickly and locally for the same kind of position tracking used for hurricanes
 
 ## Version One Definition of Done
 
