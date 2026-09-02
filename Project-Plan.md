@@ -2,7 +2,7 @@
 
 ## Overview
 
-A 3D globe application displaying the real atmospheric conditions that drive storm formation, including wind, temperature, and precipitation, alongside actively tracked hurricanes. All data is live and sourced from public agencies. The application includes multiple toggleable layers so a user can view any combination of conditions and events at once, entirely in 3D.
+Live Storm Tracker is a 3D globe application that tracks storms by displaying the real atmospheric conditions that drive their formation, including wind, temperature, and precipitation, alongside actively tracked hurricanes. All data is live and sourced from public agencies. The application includes multiple toggleable layers so a user can view any combination of conditions and events at once, entirely in 3D.
 
 This is not a single purpose hurricane tracker. It is a comprehensive storm visualization tool built around four independent, toggleable layers that together represent the full picture of a storm system: the conditions that enable it, and the tracked event itself.
 
@@ -23,7 +23,7 @@ The application does not predict storm formation or forecast paths beyond what t
 | Wind and temperature data | Open Meteo, called directly from the browser, no key required |
 | Precipitation radar | RainViewer, called directly from the browser, no key required |
 | Hurricane data | National Hurricane Center public storm feed, called directly from the browser, no key required |
-| Hosting | Static frontend, Cloudflare Pages or Vercel, free tier |
+| Hosting | Static frontend, Cloudflare Pages, free tier |
 
 No backend is required for version one. Every data source is free, requires no key, and can be called directly from the frontend. Exact endpoint URLs and tile patterns should be verified against each provider's current documentation at implementation time rather than assumed from this plan.
 
