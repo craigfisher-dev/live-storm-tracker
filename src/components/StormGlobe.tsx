@@ -1,9 +1,9 @@
 import { OrbitControls } from '@react-three/drei';
 
 
-function Globe() {
+// function Globe() {
 
-}
+// }
 
 function StormGlobe()
 {
