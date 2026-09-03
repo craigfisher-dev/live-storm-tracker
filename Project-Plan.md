@@ -21,14 +21,11 @@ The application does not predict storm formation or forecast paths beyond what t
 - Vite, React and TypeScript template
 - React
 - TypeScript
-- Tailwind CSS, for styling the interface elements such as layer toggle controls and the temperature popup. This is separate from the three dimensional rendering, which remains entirely in Three.js and React Three Fiber.
+- Tailwind CSS, for styling the interface elements such as layer toggle controls and the temperature popup. This is separate from the three dimensional rendering, which is CesiumJS.
 
-### Three.js Rendering
+### Three Dimensional Rendering
 
-- three, the Three.js core library
-- react three fiber
-- drei
-- three globe
+- CesiumJS
 
 ### Data Sources
 
@@ -95,10 +92,9 @@ Public feed covering the Atlantic and Eastern and Central Pacific basins. No key
 - [x] Cloudflare Vite plugin configured in vite.config.ts
 - [x] wrangler.jsonc generated via wrangler setup
 - [x] Deploy and preview scripts added to package.json
-- [x] three installed
-- [x] react three fiber installed
-- [x] drei installed
-- [x] three globe installed
+- [x] three, react three fiber, drei, and three globe removed, in favor of CesiumJS
+- [x] CesiumJS installed
+- [x] CesiumJS configured
 - [x] npm run dev running with no errors or warnings
 
 ## Deployment Setup
@@ -109,10 +105,10 @@ Public feed covering the Atlantic and Eastern and Central Pacific basins. No key
 ## Build Order
 
 1. [ ] Static rotating globe with GIBS base imagery
-   - [x] Basic sphere rendering with mesh, sphereGeometry, and meshPhongMaterial, built by hand to learn the underlying Three.js concepts before reintroducing the three globe library
-   - [ ] Replace the hand built sphere with the three globe library
-   - [ ] Wire up GIBS imagery through the tile engine method
-2. [ ] Wind particle layer, built first as a flat proof of concept, then adapted to wrap correctly around the sphere
+   - [x] Basic sphere rendering with mesh, sphereGeometry, and meshPhongMaterial, built by hand in Three.js and React Three Fiber to learn 3D rendering concepts, before switching the project's rendering approach to CesiumJS
+   - [x] CesiumJS viewer set up
+   - [ ] Wire up GIBS imagery as a CesiumJS imagery layer
+2. [ ] Wind particle layer, built first as a flat proof of concept, then adapted to wrap correctly around the globe
 3. [ ] Temperature layer with click for current conditions and forecast
 4. [ ] Radar tile overlay, using the same tile engine pattern as the base imagery
 5. [ ] Hurricane markers from the National Hurricane Center feed, positioned so the storm's structure is visible through the wind and radar layers beneath it
