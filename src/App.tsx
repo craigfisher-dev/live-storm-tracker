@@ -28,6 +28,12 @@ function App() {
     // Guard: don't init if container doesn't exist or viewer already created
     if (!containerRef.current || viewerRef.current) return
 
+    // Esri basemap key
+    Cesium.ArcGisMapService.defaultAccessToken = import.meta.env.VITE_ESRI_KEY
+
+    // Cap zoom detail so tile usage stays reasonable
+    const BASEMAP_MAX_LEVEL = 8
+
     // Create the Cesium viewer with most UI widgets disabled
     // We're building our own custom UI instead
     const viewer = new Cesium.Viewer(containerRef.current, {
@@ -35,12 +41,20 @@ function App() {
       animation: false,           // Hide the clock/animation widget
       baseLayerPicker: false,     // Hide the imagery layer picker
       geocoder: false,            // Hide the search box
-      homeButton: true,           // shows the home button
+      homeButton: true,           // Show the home button
       sceneModePicker: false,     // Hide 2D/3D/Columbus view picker
       navigationHelpButton: true, // Hide the ? help button
-      baseLayer: false,           // Don't load default Bing imagery
+      // ArcGIS satellite imagery as the base layer, capped at BASEMAP_MAX_LEVEL
+      baseLayer: Cesium.ImageryLayer.fromProviderAsync(
+        Cesium.ArcGisMapServerImageryProvider.fromBasemapType(
+          Cesium.ArcGisBaseMapType.SATELLITE,
+          {
+            maximumLevel: BASEMAP_MAX_LEVEL
+          }
+        )
+      ),
       requestRenderMode: true,    // Only re-render when something changes (saves GPU)
-      fullscreenButton: false,    // Disables the full screen button
+      fullscreenButton: false,    // Disable the full screen button
     })
 
     viewer.scene.skyBox = new Cesium.SkyBox({
@@ -57,16 +71,12 @@ function App() {
     // Show FPS counter in the top-left
     // viewer.scene.debugShowFramesPerSecond = true
 
-    const cartoKey = import.meta.env.VITE_CARTO_KEY;
-
-    const carto = new Cesium.UrlTemplateImageryProvider({
-      url: `https://basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}.png?key=${cartoKey}`,
-      credit: '© OpenStreetMap contributors © CARTO'
-    })
-    viewer.imageryLayers.addImageryProvider(carto)
-
     // Start with high detail for globe view on load
     viewer.scene.globe.maximumScreenSpaceError = 1
+
+    // Stop the camera from getting closer than what level 8 tiles can actually show -
+    // otherwise it just keeps trying to load detail that isn't there
+    viewer.scene.screenSpaceCameraController.minimumZoomDistance = 476600
 
     // Enable day/night shading based on sun position
     // The dark side of Earth will actually look dark

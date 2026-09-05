@@ -29,7 +29,7 @@ The application does not predict storm formation or forecast paths beyond what t
 
 ### Data Sources
 
-All data sources are called directly from the browser and require no key. See the Data Sources section below for full detail on each.
+Weather and hurricane data sources are called directly from the browser and require no key. Base imagery is the one exception: it uses Esri's ArcGIS basemap service, which requires a free API key. See the Data Sources section below for full detail on each.
 
 ### Deployment
 
@@ -40,7 +40,7 @@ All data sources are called directly from the browser and require no key. See th
 - Deployment command: npm run deploy
 - Local production preview command: npm run preview
 
-Every data source is free, requires no key, and can be called directly from the frontend. Exact endpoint URLs and tile patterns should be verified against each provider's current documentation at implementation time rather than assumed from this plan.
+Weather and hurricane data sources are free, require no key, and are called directly from the frontend. Base imagery uses a free Esri API key instead, since it isn't a keyless service. Exact endpoint URLs and tile patterns should be verified against each provider's current documentation at implementation time rather than assumed from this plan.
 
 ## Layers and Toggles
 
@@ -61,9 +61,11 @@ Planned additional toggles:
 
 ## Data Sources
 
-### NASA GIBS, base imagery
+### Esri, base imagery
 
-Provides daily updated satellite imagery as XYZ map tiles, used with the tile engine method on the globe object. No key required.
+Provides satellite imagery as the base layer, using ArcGIS World Imagery. Requires a free Esri API key, scoped to basemaps only and restricted to the app's own domains. Free tier is 2 million tiles per month, no payment method on file, so the basemap simply stops loading if that's ever hit rather than generating a bill. Zoom is capped at level 8 to keep tile usage low, which still shows towns, major roads, and regional context. If usage ever approaches the free tier limit, the fallback is to lower the zoom cap and basemap resolution further before switching providers.
+
+No labels layer right now - see the Labels Todo section below.
 
 ### Open Meteo, wind and temperature
 
@@ -76,6 +78,18 @@ Provides the past two hours of radar frames plus a short term forecast, delivere
 ### National Hurricane Center, hurricanes
 
 Public feed covering the Atlantic and Eastern and Central Pacific basins. No key required. Each active storm includes name, classification, wind speed, pressure, position, movement, and links to the official forecast.
+
+## Labels Todo
+
+Currently no labels on the globe - satellite imagery only for now.
+
+Tried and ruled out:
+
+- Esri's older raster boundaries and places layer - text was too small and blurry, baked into the tile images so it can't be resized
+- Esri's newer vector-based imagery labels layer - same problem, text still too small
+- CARTO's labels-only tiles - hard to read against satellite imagery
+
+Next attempt should not be Esri. Options to look into: a proper city/places dataset (something like Natural Earth's populated places) rendered as real Cesium Label entities instead of a tile layer, so font size is fully controllable and always sharp.
 
 ## Project Setup
 
@@ -104,10 +118,11 @@ Public feed covering the Atlantic and Eastern and Central Pacific basins. No key
 
 ## Build Order
 
-1. [ ] Static rotating globe with GIBS base imagery
+1. [ ] Static rotating globe with base imagery
    - [x] Basic sphere rendering with mesh, sphereGeometry, and meshPhongMaterial, built by hand in Three.js and React Three Fiber to learn 3D rendering concepts, before switching the project's rendering approach to CesiumJS
    - [x] CesiumJS viewer set up
-   - [ ] Wire up GIBS imagery as a CesiumJS imagery layer
+   - [x] Esri satellite imagery wired up as the CesiumJS base layer, zoom capped at level 8
+   - [ ] Labels - see Labels Todo section
 2. [ ] Wind particle layer, built first as a flat proof of concept, then adapted to wrap correctly around the globe
 3. [ ] Temperature layer with click for current conditions and forecast
 4. [ ] Radar tile overlay, using the same tile engine pattern as the base imagery
