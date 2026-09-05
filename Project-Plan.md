@@ -65,6 +65,8 @@ Planned additional toggles:
 
 Provides satellite imagery as the base layer, using ArcGIS World Imagery. Requires a free Esri API key, scoped to basemaps only and restricted to the app's own domains. Free tier is 2 million tiles per month, no payment method on file, so the basemap simply stops loading if that's ever hit rather than generating a bill. Zoom is capped at level 8 to keep tile usage low, which still shows towns, major roads, and regional context. If usage ever approaches the free tier limit, the fallback is to lower the zoom cap and basemap resolution further before switching providers.
 
+**Dev note:** Esri's tile responses come back with `Cache-Control: max-age=86400` (24 hours). Chrome DevTools' "Offline" throttling mode was making it look like every tile was being re-fetched on every reload, when in reality tiles already in disk cache should serve with zero network calls for a full 24 hours. Switched DevTools Network conditions from Offline to No Throttling and confirmed tiles now return `(disk cache)` with no request sent. This cache persists across page refreshes, dev server restarts, and browser restarts (cache is keyed to the Esri tile URL/origin, not localhost) — it only resets on hard refresh, manual cache clearing, incognito windows, or if "Disable cache" is checked in DevTools. Net effect: real day-to-day dev tile usage is far lower than it appeared, since repeat views of the same area/zoom within 24 hours cost nothing.
+
 No labels layer right now - see the Labels Todo section below.
 
 ### Open Meteo, wind and temperature
@@ -110,6 +112,8 @@ Next attempt should not be Esri. Options to look into: a proper city/places data
 - [x] CesiumJS installed
 - [x] CesiumJS configured
 - [x] npm run dev running with no errors or warnings
+- [x] npm run dev running with no errors or warnings
+- [x] Diagnosed and fixed inflated tile usage during dev — DevTools was set to Offline throttling, masking Esri's 24hr disk cache; confirmed tiles now cache properly with no unnecessary re-fetches
 
 ## Deployment Setup
 
