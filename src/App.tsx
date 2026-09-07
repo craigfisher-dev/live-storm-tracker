@@ -9,7 +9,7 @@ setWorkerUrl(workerUrl)
 
 // Styles: dark-matter-gl-style | positron-gl-style | voyager-gl-style
 const STYLE_URL =
-  `https://basemaps.cartocdn.com/gl/dark-matter-gl-style/style.json?key=${import.meta.env.VITE_CARTO_KEY}`
+  `https://basemaps.cartocdn.com/gl/voyager-gl-style/style.json?key=${import.meta.env.VITE_CARTO_KEY}`
 
 function App() {
 
@@ -50,15 +50,18 @@ function App() {
         type: 'fill-extrusion',
         source: 'carto',
         'source-layer': 'building',
-        minzoom: 13,
-        // Height is the only paint property that has to be set - it
-        // defaults to 0, so without it nothing extrudes. Color defaults to
-        // black, which reads fine on a light style but disappears on
-        // dark-matter. Set fill-extrusion-color if switching to a dark style.
+        minzoom: 14,
+        // Voyager's own building-top color, so extrusions match the flat
+        // footprints underneath. Height has to be set - it defaults to 0,
+        // so without it nothing extrudes.
         paint: {
-          'fill-extrusion-height': ['get', 'render_height']
+          'fill-extrusion-color': '#f3eadc',
+          'fill-extrusion-height': ['get', 'render_height'],
+          'fill-extrusion-opacity': 0.85
         }
       })
+      // extrusions instead of drifting off them.
+      map.setPaintProperty('building-top', 'fill-translate', [0, 0])
     })
 
     return () => {
