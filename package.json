@@ -12,8 +12,8 @@
   },
   "dependencies": {
     "@tailwindcss/vite": "^4.3.3",
-    "cesium": "^1.145.0",
     "lucide-react": "^1.40.0",
+    "maplibre-gl": "^6.7.0",
     "react": "^19.2.8",
     "react-dom": "^19.2.8",
     "tailwindcss": "^4.3.3"
@@ -27,7 +27,6 @@
     "oxlint": "^1.79.0",
     "typescript": "~6.0.2",
     "vite": "^8.2.2",
-    "vite-plugin-cesium": "^1.2.23",
     "wrangler": "^4.128.0"
   }
 }
