@@ -1,15 +1,12 @@
 import { useEffect, useRef } from 'react'
-import { Map, NavigationControl, GlobeControl, setWorkerUrl } from 'maplibre-gl'
+import { Map, setWorkerUrl } from 'maplibre-gl'
 import 'maplibre-gl/dist/maplibre-gl.css'
 // v6 needs ?worker&url, not plain ?url - plain ?url works in dev then
 // silently loads no tiles in a production build
 import workerUrl from 'maplibre-gl/dist/maplibre-gl-worker.mjs?worker&url'
+import { STYLE_URL, HOME_VIEW, addMapControls } from './map/MapControls'
 
 setWorkerUrl(workerUrl)
-
-// Styles: dark-matter-gl-style | positron-gl-style | voyager-gl-style
-const STYLE_URL =
-  `https://basemaps.cartocdn.com/gl/voyager-gl-style/style.json?key=${import.meta.env.VITE_CARTO_KEY}`
 
 function App() {
 
@@ -22,25 +19,26 @@ function App() {
     const map = new Map({
       container: containerRef.current,
       style: STYLE_URL,
-      center: [-82.4, 27.9],
-      zoom: 4,
-      pitch: 45,
-      bearing: 0,
+      center: HOME_VIEW.center,
+      zoom: HOME_VIEW.zoom,
+      pitch: HOME_VIEW.pitch,
+      bearing: HOME_VIEW.bearing,
       maxPitch: 60
     })
 
     mapRef.current = map
 
-    // Bearing locked, tilt free. dragRotate is a shim over two internal
-    // handlers - disabling only _mouseRotate leaves right-drag pitch alive.
-    // _mouseRotate is private API: if a MapLibre upgrade renames it, tilt
-    // silently stops working with no error. Recheck after version bumps.
-    ;(map.dragRotate as any)._mouseRotate.disable()
+    // Pitch is now toggle-only (TiltControl), so all manual tilt/rotate
+    // gestures are disabled - right-click-drag, two-finger touch pitch,
+    // and keyboard rotation. dragRotate.disable() covers both bearing
+    // and pitch since maplibre treats right-drag as one composite
+    // handler; no need to reach into private internals anymore.
+    map.dragRotate.disable()
+    map.touchPitch.disable()
     map.touchZoomRotate.disableRotation()
     map.keyboard.disableRotation()
 
-    map.addControl(new NavigationControl({ visualizePitch: true }))
-    map.addControl(new GlobeControl())
+    addMapControls(map)
 
     // Layers have to wait for the style, or the source doesn't exist yet
     map.on('load', () => {
